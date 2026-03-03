@@ -1,0 +1,57 @@
+<component name="InspectionProjectProfileManager">
+  <profile version="1.0">
+    <option name="myName" value="Project Default" />
+    <inspection_tool class="Eslint" enabled="true" level="WARNING" enabled_by_default="true" />
+    <inspection_tool class="VulnerableLibrariesLocal" enabled="true" level="WARNING" enabled_by_default="true">
+      <option name="isIgnoringEnabled" value="true" />
+      <option name="ignoredModules">
+        <list>
+          <option value="backend" />
+          <option value="backend" />
+          <option value="backend" />
+          <option value="backend" />
+          <option value="backend" />
+          <option value="backend" />
+          <option value="backend" />
+          <option value="backend" />
+          <option value="backend" />
+          <option value="backend" />
+          <option value="backend" />
+          <option value="backend" />
+        </list>
+      </option>
+      <option name="ignoredPackages">
+        <list>
+          <option value="com.fasterxml.jackson.core:jackson-core:2.20.2" />
+          <option value="tools.jackson.core:jackson-core:3.0.4" />
+          <option value="org.springframework.boot:spring-boot:3.4.3" />
+          <option value="ch.qos.logback:logback-core:1.5.16" />
+          <option value="org.apache.tomcat.embed:tomcat-embed-core:10.1.36" />
+          <option value="org.springframework:spring-web:6.2.3" />
+          <option value="org.springframework:spring-beans:6.2.3" />
+          <option value="org.springframework:spring-webmvc:6.2.3" />
+          <option value="org.springframework:spring-context:6.2.3" />
+          <option value="com.fasterxml.jackson.core:jackson-core:2.18.2" />
+          <option value="org.springframework:spring-core:6.2.3" />
+          <option value="org.assertj:assertj-core:3.26.3" />
+        </list>
+      </option>
+      <option name="ignoredReasons">
+        <list>
+          <option value="Not exploitable" />
+          <option value="Not exploitable" />
+          <option value="Not exploitable" />
+          <option value="Not exploitable" />
+          <option value="Not exploitable" />
+          <option value="Not exploitable" />
+          <option value="Not exploitable" />
+          <option value="Not exploitable" />
+          <option value="Not exploitable" />
+          <option value="Not exploitable" />
+          <option value="Not exploitable" />
+          <option value="Not exploitable" />
+        </list>
+      </option>
+    </inspection_tool>
+  </profile>
+</component>
