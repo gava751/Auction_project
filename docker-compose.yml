@@ -5,10 +5,9 @@ services:
     image: mysql:8.0
     container_name: auction_mysql
     environment:
-      MYSQL_ROOT_PASSWORD: root
+      # Пароль для root задается ТОЛЬКО этой переменной
+      MYSQL_ROOT_PASSWORD: "1111"
       MYSQL_DATABASE: auction_db
-      MYSQL_USER: auction_user
-      MYSQL_PASSWORD: auction_password
     ports:
       - "3306:3306"
     volumes:
