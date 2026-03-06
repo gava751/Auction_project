@@ -1,4 +1,10 @@
 spring:
+  data:
+    redis:
+      host: localhost
+      port: 6379
+  cache:
+    type: redis
   datasource:
     url: jdbc:mysql://localhost:3306/auction_db?createDatabaseIfNotExist=true&serverTimezone=UTC&characterEncoding=UTF-8
     username: root
