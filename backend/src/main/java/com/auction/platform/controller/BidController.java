@@ -32,7 +32,7 @@ public class BidController {
     }
 
     @PostMapping("/auto/{lotId}")
-    @PreAuthorize("hasRole('BUYER')")
+    @PreAuthorize("hasAuthority('ROLE_BUYER')")
     @SecurityRequirement(name = "Bearer Authentication")
     @Operation(summary = "Установить лимит для авто-биддера (прокси-ставка)")
     public ResponseEntity<String> setupAutoBid(

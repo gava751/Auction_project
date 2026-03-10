@@ -25,7 +25,8 @@ CREATE TABLE oauth2_links (
 CREATE TABLE categories (
                             id BIGINT AUTO_INCREMENT PRIMARY KEY,
                             name VARCHAR(100) NOT NULL UNIQUE,
-                            description TEXT
+                            description TEXT,
+                            created_at DATETIME DEFAULT CURRENT_TIMESTAMP
 );
 
 -- Таблица лотов

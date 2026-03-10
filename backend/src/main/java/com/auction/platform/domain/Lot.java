@@ -19,6 +19,9 @@ public class Lot extends BaseEntity<Long> {
     @Column(name = "seller_id", nullable = false)
     private Long sellerId;
 
+    @Column(name = "category_id", nullable = false)
+    private Long categoryId;
+
     @Column(nullable = false)
     private String title;
 
@@ -42,8 +45,9 @@ public class Lot extends BaseEntity<Long> {
     @Version
     private Integer version; // Optimistic Locking
 
-    public Lot(Long sellerId, String title, BigDecimal startPrice, BigDecimal bidStep, LocalDateTime endTime) {
+    public Lot(Long sellerId, Long categoryId, String title, BigDecimal startPrice, BigDecimal bidStep, LocalDateTime endTime) {
         this.sellerId = sellerId;
+        this.categoryId = categoryId; // Не забудьте эту строку
         this.title = title;
         this.startPrice = startPrice;
         this.currentPrice = startPrice;

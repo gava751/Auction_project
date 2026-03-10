@@ -44,7 +44,7 @@ class BidServiceTest {
         buyer.setId(1L);
         buyer.setEmail("buyer@example.com");
 
-        activeLot = new Lot(2L, "Test Item", new BigDecimal("100.00"), new BigDecimal("10.00"), LocalDateTime.now().plusDays(1));
+        activeLot = new Lot(2L, 1L, "Test Item", new BigDecimal("100.00"), new BigDecimal("10.00"), LocalDateTime.now().plusDays(1));
         activeLot.setId(10L);
     }
 

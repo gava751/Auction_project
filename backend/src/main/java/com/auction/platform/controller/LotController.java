@@ -29,4 +29,9 @@ public class LotController {
         PageRequest pageRequest = PageRequest.of(page, size, Sort.by(sortBy).ascending());
         return ResponseEntity.ok(lotService.getActiveLots(pageRequest));
     }
+    @GetMapping("/{id}")
+    @Operation(summary = "Получить детальную информацию о лоте")
+    public ResponseEntity<LotResponse> getLotById(@PathVariable Long id) {
+        return ResponseEntity.ok(com.auction.platform.pattern.factory.LotFactory.createResponse(lotService.getLotEntityById(id)));
+    }
 }
