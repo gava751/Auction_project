@@ -61,6 +61,13 @@ export const LoginPage = () => {
                 >
                     Войти
                 </button>
+                <a
+                    href="http://localhost:8080/oauth2/authorization/google"
+                    className="w-full mt-4 flex items-center justify-center gap-2 border border-gray-300 py-2 rounded hover:bg-gray-50 transition"
+                >
+                    <img src="https://www.svgrepo.com/show/355037/google.svg" className="w-5 h-5" alt="G" />
+                    Войти через Google
+                </a>
             </form>
         </div>
     );

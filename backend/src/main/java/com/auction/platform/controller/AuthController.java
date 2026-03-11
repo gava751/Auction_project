@@ -22,7 +22,7 @@ public class AuthController {
     private final UserDetailsService userDetailsService;
     private final JwtService jwtService;
     private final UserRepository userRepository;
-
+    private final org.springframework.security.crypto.password.PasswordEncoder passwordEncoder;
     @PostMapping("/login")
     public ResponseEntity<AuthResponse> login(@RequestBody AuthRequest request) {
         // Проверяем логин и пароль
@@ -36,5 +36,18 @@ public class AuthController {
         String token = jwtService.generateToken(userDetails);
 
         return ResponseEntity.ok(new AuthResponse(token, user.getEmail(), user.getRole()));
+    }
+    @PostMapping("/register")
+    public ResponseEntity<String> register(@RequestBody AuthRequest request) {
+        if (userRepository.existsByEmail(request.email())) return ResponseEntity.badRequest().body("Email занят");
+        User user = new User();
+        user.setEmail(request.email());
+        user.setPasswordHash(passwordEncoder.encode(request.password()));
+        user.setRole("ROLE_BUYER");
+        user.setStatus("ACTIVE");
+        user.setFirstName("Новый");
+        user.setLastName("Пользователь");
+        userRepository.save(user);
+        return ResponseEntity.ok("Регистрация успешна");
     }
 }

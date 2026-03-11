@@ -80,7 +80,14 @@ export const LotPage = () => {
 
             <div className="flex flex-col space-y-6">
                 <h1 className="text-4xl font-bold text-gray-900">{lot.title}</h1>
-
+                <button
+                    onClick={() => {
+                        window.open(`http://localhost:8080/api/v1/lots/${lot.id}/report`, '_blank');
+                    }}
+                    className="mt-4 text-sm text-blue-600 hover:underline flex items-center gap-1"
+                >
+                    Скачать PDF отчет
+                </button>
                 <div className="flex items-center gap-6 p-4 bg-white rounded-xl shadow-sm border border-gray-100">
                     <div className="flex items-center gap-2 text-blue-600">
                         <TrendingUp size={24} />

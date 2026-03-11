@@ -17,10 +17,6 @@ public class AuctionEventListener {
     private final SimpMessagingTemplate messagingTemplate;
     private final BidRepository bidRepository;
 
-    /**
-     * Слушает события изменения лота и делает рассылку всем клиентам.
-     * Реализует паттерн Наблюдатель (Observer).
-     */
     @EventListener
     public void handleLotUpdate(Lot lot) {
         log.info("Рассылка обновления по лоту ID: {}", lot.getId());

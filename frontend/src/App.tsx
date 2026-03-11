@@ -3,6 +3,7 @@ import { HomePage } from './pages/HomePage';
 import { LoginPage } from './pages/LoginPage';
 import { LotPage } from './pages/LotPage';
 import { useAuthStore } from './store/useAuthStore';
+import {OAuth2Redirect} from "./pages/OAuth2Redirect.tsx";
 
 function App() {
     // Достаем состояние пользователя из хранилища Zustand
@@ -48,6 +49,7 @@ function App() {
                         <Route path="/" element={<HomePage />} />
                         <Route path="/login" element={<LoginPage />} />
                         <Route path="/lots/:id" element={<LotPage />} />
+                        <Route path="/oauth2/callback" element={<OAuth2Redirect />} />
                     </Routes>
                 </main>
 

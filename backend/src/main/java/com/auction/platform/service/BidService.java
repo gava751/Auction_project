@@ -29,7 +29,7 @@ public class BidService {
     private final BidRepository bidRepository;
     private final AutoBidRepository autoBidRepository;
     private final UserRepository userRepository;
-    private final ApplicationEventPublisher eventPublisher; // Для паттерна Observer (WebSockets)
+    private final ApplicationEventPublisher eventPublisher;
 
     @Transactional
     public void placeManualBid(String userEmail, BidRequest request) {
