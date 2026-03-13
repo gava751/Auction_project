@@ -27,6 +27,11 @@ public class LotService {
     }
 
     @Transactional
+    public void deleteLot(Long id) {
+        lotRepository.deleteById(id);
+    }
+
+    @Transactional
     public LotResponse createLot(Lot lot) {
         // Дополнительные проверки бизнес-логики (например, дата завершения в будущем)
         Lot savedLot = lotRepository.save(lot);

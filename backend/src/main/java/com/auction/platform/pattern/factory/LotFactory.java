@@ -9,6 +9,7 @@ public class LotFactory {
                 lot.getId(),
                 lot.getTitle(),
                 lot.getCurrentPrice(),
+                null,
                 lot.getEndTime(),
                 lot.getStatus().name()
         );

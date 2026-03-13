@@ -11,7 +11,11 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
+import com.auction.platform.service.ExternalApiService;
+
+import java.math.BigDecimal;
 
 @RestController
 @RequestMapping("/api/v1/lots")
@@ -20,6 +24,7 @@ import org.springframework.web.bind.annotation.*;
 public class LotController {
 
     private final LotService lotService;
+    private final ExternalApiService externalApiService;
 
     @GetMapping
     @Operation(summary = "Получить список активных лотов с пагинацией")
@@ -34,7 +39,13 @@ public class LotController {
     @GetMapping("/{id}")
     @Operation(summary = "Получить детальную информацию о лоте")
     public ResponseEntity<LotResponse> getLotById(@PathVariable Long id) {
-        return ResponseEntity.ok(com.auction.platform.pattern.factory.LotFactory.createResponse(lotService.getLotEntityById(id)));
+        Lot lot = lotService.getLotEntityById(id);
+        Double rate = externalApiService.getUsdToEurRate();
+        BigDecimal eurPrice = lot.getCurrentPrice().multiply(BigDecimal.valueOf(rate));
+
+        return ResponseEntity.ok(new LotResponse(
+                lot.getId(), lot.getTitle(), lot.getCurrentPrice(), eurPrice, lot.getEndTime(), lot.getStatus().name()
+        ));
     }
     @Autowired
     private com.auction.platform.service.ReportService reportService;
@@ -49,5 +60,19 @@ public class LotController {
 
         Lot lot = lotService.getLotEntityById(id);
         reportService.exportLotReport(response, lot);
+    }
+    @PostMapping
+    @PreAuthorize("hasAuthority('ROLE_SELLER')")
+    @Operation(summary = "Создать новый лот (только для продавцов)")
+    public ResponseEntity<LotResponse> createLot(@RequestBody Lot lot) {
+        return ResponseEntity.ok(lotService.createLot(lot));
+    }
+
+    @DeleteMapping("/{id}")
+    @PreAuthorize("hasAuthority('ROLE_ADMIN')")
+    @Operation(summary = "Удалить/отменить лот (только для админов)")
+    public ResponseEntity<Void> deleteLot(@PathVariable Long id) {
+        lotService.deleteLot(id);
+        return ResponseEntity.noContent().build();
     }
 }
