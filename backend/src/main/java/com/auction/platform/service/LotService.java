@@ -32,6 +32,9 @@ public class LotService {
 
     @Transactional
     public LotResponse createLot(Lot lot) {
+        if (lot.getCurrentPrice() == null) {
+            lot.setCurrentPrice(lot.getStartPrice());
+        }
         Lot savedLot = lotRepository.save(lot);
         return LotFactory.createResponse(savedLot);
     }

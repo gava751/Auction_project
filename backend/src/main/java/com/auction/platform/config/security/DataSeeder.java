@@ -63,31 +63,25 @@ public class DataSeeder {
                 userRepository.save(seller);
             }
 
-            Category category;
-            if (!categoryRepository.existsByName("Electronics")) {
-                category = new Category();
-                category.setName("Electronics");
-                category.setDescription("Гаджеты и девайсы");
-                category = categoryRepository.save(category);
-            } else {
-                category = categoryRepository.findByName("Electronics");
+            String[] categoryNames = {
+                    "Electronics",
+                    "Fashion",
+                    "Collectibles",
+                    "Art & Antiques",
+                    "Home & Garden",
+                    "Motors",
+                    "Books",
+                    "Sports"
+            };
+            for (String name : categoryNames) {
+                if (!categoryRepository.existsByName(name)) {
+                    Category cat = new Category();
+                    cat.setName(name);
+                    cat.setDescription("Category for " + name);
+                    categoryRepository.save(cat);
+                }
             }
-
-            if (lotRepository.count() == 0) {
-                Lot lot1 = new Lot(buyer.getId(), category.getId(), "Apple MacBook Pro M3 Max",
-                        new BigDecimal("2000.00"), new BigDecimal("50.00"), LocalDateTime.now().plusDays(1));
-
-                Lot lot2 = new Lot(buyer.getId(), category.getId(), "Sony PlayStation 5 Pro",
-                        new BigDecimal("450.00"), new BigDecimal("10.00"), LocalDateTime.now().plusDays(7));
-
-                Lot lot3 = new Lot(buyer.getId(), category.getId(), "Часы Rolex Submariner",
-                        new BigDecimal("8500.00"), new BigDecimal("100.00"), LocalDateTime.now().plusHours(2));
-
-                lotRepository.save(lot1);
-                lotRepository.save(lot2);
-                lotRepository.save(lot3);
-                System.out.println("✅ Тестовые данные успешно загружены!");
-            }
+            System.out.println("✅ Категории обновлены!");
         };
     }
 }

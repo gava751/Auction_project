@@ -65,7 +65,6 @@ function App() {
                         <Route path="/lots/:id" element={<LotPage />} />
                         <Route path="/oauth2/callback" element={<OAuth2Redirect />} />
                         <Route path="/admin" element={<Dashboard />} />
-                        <Route path="/create-lot" element={<Dashboard />} />
                         <Route path="/create-lot" element={<CreateLotPage />} />
                         <Route path="/apply-seller" element={<ApplySellerPage />} />
                     </Routes>
