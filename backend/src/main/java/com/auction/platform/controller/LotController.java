@@ -25,7 +25,7 @@ public class LotController {
 
     private final LotService lotService;
     private final ExternalApiService externalApiService;
-
+    private final com.auction.platform.repository.UserRepository userRepository;
     @GetMapping
     @Operation(summary = "Получить список активных лотов с пагинацией")
     public ResponseEntity<Page<LotResponse>> getActiveLots(
@@ -64,7 +64,16 @@ public class LotController {
     @PostMapping
     @PreAuthorize("hasAuthority('ROLE_SELLER')")
     @Operation(summary = "Создать новый лот (только для продавцов)")
-    public ResponseEntity<LotResponse> createLot(@RequestBody Lot lot) {
+    public ResponseEntity<com.auction.platform.dto.LotResponse> createLot(
+            @RequestBody com.auction.platform.domain.Lot lot,
+            java.security.Principal principal) {
+
+        com.auction.platform.domain.User seller = userRepository.findByEmail(principal.getName())
+                .orElseThrow(() -> new RuntimeException("Продавец не найден"));
+
+        lot.setSellerId(seller.getId());
+        lot.setStatus(com.auction.platform.domain.LotStatus.ACTIVE);
+
         return ResponseEntity.ok(lotService.createLot(lot));
     }
 

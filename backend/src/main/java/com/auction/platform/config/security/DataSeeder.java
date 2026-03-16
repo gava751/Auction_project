@@ -26,22 +26,42 @@ public class DataSeeder {
 
         return args -> {
             String email = "user@test.com";
-            User seller;
+            User buyer;
 
             // 1. Пользователь
             if (!userRepository.existsByEmail(email)) {
-                seller = new User();
-                seller.setEmail(email);
-                seller.setPasswordHash(passwordEncoder.encode("1111"));
-                seller.setFirstName("Test");
-                seller.setLastName("User");
-                seller.setRole("ROLE_BUYER");
-                seller.setStatus("ACTIVE");
-                seller = userRepository.save(seller);
+                buyer = new User();
+                buyer.setEmail(email);
+                buyer.setPasswordHash(passwordEncoder.encode("1111"));
+                buyer.setFirstName("Test");
+                buyer.setLastName("User");
+                buyer.setRole("ROLE_BUYER");
+                buyer.setStatus("ACTIVE");
+                buyer = userRepository.save(buyer);
             } else {
-                seller = userRepository.findByEmail(email).get();
-                seller.setPasswordHash(passwordEncoder.encode("1111"));
-                seller = userRepository.save(seller);
+                buyer = userRepository.findByEmail(email).get();
+                buyer.setPasswordHash(passwordEncoder.encode("1111"));
+                buyer = userRepository.save(buyer);
+            }
+            if (!userRepository.existsByEmail("admin@test.com")) {
+                User admin = new User();
+                admin.setEmail("admin@test.com");
+                admin.setPasswordHash(passwordEncoder.encode("admin"));
+                admin.setFirstName("Главный");
+                admin.setLastName("Администратор");
+                admin.setRole("ROLE_ADMIN");
+                admin.setStatus("ACTIVE");
+                userRepository.save(admin);
+            }
+            if (!userRepository.existsByEmail("seller@test.com")) {
+                User seller = new User();
+                seller.setEmail("seller@test.com");
+                seller.setPasswordHash(passwordEncoder.encode("seller"));
+                seller.setFirstName("Иван");
+                seller.setLastName("Продавец");
+                seller.setRole("ROLE_SELLER");
+                seller.setStatus("ACTIVE");
+                userRepository.save(seller);
             }
 
             // 2. Категория
@@ -57,13 +77,13 @@ public class DataSeeder {
 
             // 3. Лоты (передаем category.getId() вторым параметром)
             if (lotRepository.count() == 0) {
-                Lot lot1 = new Lot(seller.getId(), category.getId(), "Apple MacBook Pro M3 Max",
+                Lot lot1 = new Lot(buyer.getId(), category.getId(), "Apple MacBook Pro M3 Max",
                         new BigDecimal("2000.00"), new BigDecimal("50.00"), LocalDateTime.now().plusDays(1));
 
-                Lot lot2 = new Lot(seller.getId(), category.getId(), "Sony PlayStation 5 Pro",
+                Lot lot2 = new Lot(buyer.getId(), category.getId(), "Sony PlayStation 5 Pro",
                         new BigDecimal("450.00"), new BigDecimal("10.00"), LocalDateTime.now().plusDays(7));
 
-                Lot lot3 = new Lot(seller.getId(), category.getId(), "Часы Rolex Submariner",
+                Lot lot3 = new Lot(buyer.getId(), category.getId(), "Часы Rolex Submariner",
                         new BigDecimal("8500.00"), new BigDecimal("100.00"), LocalDateTime.now().plusHours(2));
 
                 lotRepository.save(lot1);

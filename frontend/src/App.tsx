@@ -2,18 +2,17 @@ import { BrowserRouter, Routes, Route, Link } from 'react-router-dom';
 import { HomePage } from './pages/HomePage';
 import { LoginPage } from './pages/LoginPage';
 import { LotPage } from './pages/LotPage';
+import { OAuth2Redirect } from './pages/OAuth2Redirect';
+import { Dashboard } from './pages/Dashboard'; // Исправлено: добавили импорт
 import { useAuthStore } from './store/useAuthStore';
-import {OAuth2Redirect} from "./pages/OAuth2Redirect.tsx";
+import { CreateLotPage } from './pages/CreateLotPage';
 
 function App() {
-    // Достаем состояние пользователя из хранилища Zustand
     const { user, logout } = useAuthStore();
 
     return (
         <BrowserRouter>
             <div className="min-h-screen bg-gray-50 text-gray-900">
-
-                {/* Навигационная панель */}
                 <nav className="bg-white shadow-sm p-4 mb-6">
                     <div className="container mx-auto flex justify-between items-center">
                         <Link to="/" className="font-bold text-blue-600 text-xl tracking-tight">
@@ -23,6 +22,19 @@ function App() {
                         <div>
                             {user ? (
                                 <div className="flex items-center gap-4">
+                                    {/* Исправлено: добавили ? для проверки на null */}
+                                    {user?.role === 'ROLE_ADMIN' && (
+                                        <Link to="/admin" className="text-sm font-bold text-red-600 border border-red-200 px-3 py-1 rounded-lg hover:bg-red-50">
+                                            Админка
+                                        </Link>
+                                    )}
+
+                                    {user?.role === 'ROLE_SELLER' && (
+                                        <Link to="/create-lot" className="text-sm font-bold text-green-600 border border-green-200 px-3 py-1 rounded-lg hover:bg-green-50">
+                                            + Выставить лот
+                                        </Link>
+                                    )}
+
                                     <span className="text-sm text-gray-600">Привет, {user.email}</span>
                                     <button
                                         onClick={logout}
@@ -43,16 +55,17 @@ function App() {
                     </div>
                 </nav>
 
-                {/* Контент страниц */}
                 <main className="container mx-auto px-4">
                     <Routes>
                         <Route path="/" element={<HomePage />} />
                         <Route path="/login" element={<LoginPage />} />
                         <Route path="/lots/:id" element={<LotPage />} />
                         <Route path="/oauth2/callback" element={<OAuth2Redirect />} />
+                        <Route path="/admin" element={<Dashboard />} />
+                        <Route path="/create-lot" element={<Dashboard />} />
+                        <Route path="/create-lot" element={<CreateLotPage />} />
                     </Routes>
                 </main>
-
             </div>
         </BrowserRouter>
     );
