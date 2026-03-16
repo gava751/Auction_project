@@ -116,22 +116,3 @@ expand_less
 Google Identity API: OAuth 2.0 авторизация.
 
 Exchange Rates API: Получение актуального курса USD/EUR для динамической конвертации стоимости лотов.
-
-📁 Структура проекта
-code
-Text
-download
-content_copy
-expand_less
-.
-├── backend/            # Spring Boot приложение
-│   ├── src/main/java/  # Исходный код (Clean Architecture)
-│   ├── src/test/       # Unit & Integration тесты
-│   └── Dockerfile      # Инструкция сборки образа
-├── frontend/           # React SPA
-│   ├── src/pages/      # Страницы (Каталог, Лоты, Админка)
-│   ├── src/api/        # Настройки Axios и WebSockets
-│   └── Dockerfile      # Сборка через Multi-stage (Node -> Nginx)
-└── docker-compose.yml  # Оркестрация всего стека
-
-Разработано в учебных целях. (с) 2026
