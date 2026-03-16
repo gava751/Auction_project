@@ -6,7 +6,7 @@ import { OAuth2Redirect } from './pages/OAuth2Redirect';
 import { Dashboard } from './pages/Dashboard'; // Исправлено: добавили импорт
 import { useAuthStore } from './store/useAuthStore';
 import { CreateLotPage } from './pages/CreateLotPage';
-
+import { ApplySellerPage } from './pages/ApplySellerPage';
 function App() {
     const { user, logout } = useAuthStore();
 
@@ -34,7 +34,11 @@ function App() {
                                             + Выставить лот
                                         </Link>
                                     )}
-
+                                    {user?.role === 'ROLE_BUYER' && (
+                                        <Link to="/apply-seller" className="text-sm font-bold text-blue-600 border border-blue-200 px-3 py-1 rounded-lg hover:bg-blue-50">
+                                            Стать продавцом
+                                        </Link>
+                                    )}
                                     <span className="text-sm text-gray-600">Привет, {user.email}</span>
                                     <button
                                         onClick={logout}
@@ -64,6 +68,7 @@ function App() {
                         <Route path="/admin" element={<Dashboard />} />
                         <Route path="/create-lot" element={<Dashboard />} />
                         <Route path="/create-lot" element={<CreateLotPage />} />
+                        <Route path="/apply-seller" element={<ApplySellerPage />} />
                     </Routes>
                 </main>
             </div>
