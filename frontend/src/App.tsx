@@ -22,7 +22,6 @@ function App() {
                         <div>
                             {user ? (
                                 <div className="flex items-center gap-4">
-                                    {/* Исправлено: добавили ? для проверки на null */}
                                     {user?.role === 'ROLE_ADMIN' && (
                                         <Link to="/admin" className="text-sm font-bold text-red-600 border border-red-200 px-3 py-1 rounded-lg hover:bg-red-50">
                                             Админка

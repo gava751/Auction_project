@@ -11,7 +11,6 @@ export const HomePage = () => {
     useEffect(() => {
         const fetchLots = async () => {
             try {
-                // Запрашиваем лоты с пагинацией (страница 0, размер 12)
                 const response = await api.get<PageResponse<Lot>>('/lots?page=0&size=12');
                 setLots(response.data.content);
             } catch (err) {

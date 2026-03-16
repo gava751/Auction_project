@@ -19,7 +19,6 @@ public class LotService {
     private final LotRepository lotRepository;
 
     @Transactional(readOnly = true)
-    // Кэшируем результаты первой страницы каталога для снижения нагрузки на БД
     @Cacheable(value = "activeLots", key = "#pageable.pageNumber + '-' + #pageable.pageSize")
     public Page<LotResponse> getActiveLots(Pageable pageable) {
         return lotRepository.findActiveLots(pageable)
@@ -33,7 +32,6 @@ public class LotService {
 
     @Transactional
     public LotResponse createLot(Lot lot) {
-        // Дополнительные проверки бизнес-логики (например, дата завершения в будущем)
         Lot savedLot = lotRepository.save(lot);
         return LotFactory.createResponse(savedLot);
     }

@@ -4,6 +4,7 @@ export interface Lot {
     currentPrice: number;
     endTime: string;
     status: string;
+    eurPrice?: number;
 }
 
 export interface PageResponse<T> {

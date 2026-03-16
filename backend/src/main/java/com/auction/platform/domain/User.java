@@ -25,8 +25,8 @@ public class User extends BaseEntity<Long> {
 
     @Column(nullable = false)
     @JdbcTypeCode(SqlTypes.VARCHAR)
-    private String role; // ROLE_BUYER, ROLE_SELLER, ROLE_ADMIN
+    private String role;
 
     @Column(nullable = false)
-    private String status; // ACTIVE, BANNED
+    private String status;
 }

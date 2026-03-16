@@ -62,7 +62,9 @@ export const Dashboard = () => {
                                     <div>
                                         <p className="font-bold">Пользователь: <span className="text-blue-600">{app.user.email}</span></p>
                                         <p className="text-sm text-gray-600 mt-1">Паспорт: <span className="font-mono bg-gray-200 px-1 rounded">{app.passportData}</span></p>
-                                        <p className="text-xs text-gray-400 mt-1">Файл: {app.documentPath}</p>
+                                        <a href={`http://localhost:8080/${app.documentPath}`} target="_blank" rel="noreferrer" className="text-xs text-blue-500 hover:underline mt-1 block">
+                                            📄 Посмотреть документ
+                                        </a>
                                     </div>
                                     <div className="flex gap-2 w-full md:w-auto">
                                         <button

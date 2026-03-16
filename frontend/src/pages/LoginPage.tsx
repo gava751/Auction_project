@@ -4,8 +4,8 @@ import { useAuthStore } from '../store/useAuthStore';
 import api from '../api/axios';
 
 export const LoginPage = () => {
-    const [email, setEmail] = useState('user@test.com');
-    const [password, setPassword] = useState('1111'); // Заглушки для быстрого входа
+    const [email, setEmail] = useState('');
+    const [password, setPassword] = useState('');
     const[error, setError] = useState('');
 
     const navigate = useNavigate();
@@ -18,12 +18,10 @@ export const LoginPage = () => {
             const response = await api.post('/auth/login', { email, password });
             const { token, email: userEmail, role } = response.data;
 
-            // Сохраняем в Zustand Store и localStorage
             login({ email: userEmail, role }, token);
 
-            // Перенаправляем на главную
             navigate('/');
-        } catch (err) {
+        } catch {
             setError('Неверный email или пароль');
         }
     };

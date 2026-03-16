@@ -25,7 +25,7 @@ export const LotPage = () => {
         });
 
         const stompClient = createStompClient((updatedLot: Lot) => {
-            setLot(updatedLot); // Обновляем состояние лота в реальном времени
+            setLot(updatedLot);
         }, Number(id));
 
         stompClient.activate();
@@ -99,6 +99,9 @@ export const LotPage = () => {
                         <div>
                             <p className="text-xs text-gray-500 uppercase font-bold">Текущая цена</p>
                             <p className="text-3xl font-black">${lot.currentPrice.toFixed(2)}</p>
+                            {lot.eurPrice && (
+                                <p className="text-sm text-gray-500 font-medium">≈ €{lot.eurPrice.toFixed(2)}</p>
+                            )}
                         </div>
                     </div>
                     <div className="h-10 w-px bg-gray-200"></div>

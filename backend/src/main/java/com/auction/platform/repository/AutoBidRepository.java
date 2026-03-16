@@ -9,8 +9,6 @@ import java.util.Optional;
 
 public interface AutoBidRepository extends JpaRepository<AutoBid, Long> {
 
-    // @EntityGraph "подтягивает" связанные сущности (User) за один SQL-запрос (JOIN FETCH),
-    // решая проблему N+1 при рассылке уведомлений.
     @EntityGraph(attributePaths = {"user"})
     List<AutoBid> findByLotIdAndIsActiveTrueOrderByMaxLimitDesc(Long lotId);
 

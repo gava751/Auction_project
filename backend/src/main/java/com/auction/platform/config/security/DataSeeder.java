@@ -28,7 +28,6 @@ public class DataSeeder {
             String email = "user@test.com";
             User buyer;
 
-            // 1. Пользователь
             if (!userRepository.existsByEmail(email)) {
                 buyer = new User();
                 buyer.setEmail(email);
@@ -64,7 +63,6 @@ public class DataSeeder {
                 userRepository.save(seller);
             }
 
-            // 2. Категория
             Category category;
             if (!categoryRepository.existsByName("Electronics")) {
                 category = new Category();
@@ -75,7 +73,6 @@ public class DataSeeder {
                 category = categoryRepository.findByName("Electronics");
             }
 
-            // 3. Лоты (передаем category.getId() вторым параметром)
             if (lotRepository.count() == 0) {
                 Lot lot1 = new Lot(buyer.getId(), category.getId(), "Apple MacBook Pro M3 Max",
                         new BigDecimal("2000.00"), new BigDecimal("50.00"), LocalDateTime.now().plusDays(1));

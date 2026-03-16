@@ -9,7 +9,7 @@ public class BidStepValidator implements ConstraintValidator<ValidBidStep, BigDe
     @Override
     public boolean isValid(BigDecimal value, ConstraintValidatorContext context) {
         if (value == null) {
-            return true; // @NotNull должен обрабатывать проверку на null отдельно
+            return true;
         }
         return value.scale() <= 2;
     }

@@ -6,7 +6,6 @@ interface LotCardProps {
 }
 
 export const LotCard = ({ lot }: LotCardProps) => {
-    // Функция для красивого форматирования даты
     const formatEndTime = (dateString: string) => {
         const date = new Date(dateString);
         return date.toLocaleString('ru-RU', {

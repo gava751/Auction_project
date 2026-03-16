@@ -6,7 +6,7 @@ public record LotResponse(
         Long id,
         String title,
         BigDecimal currentPrice,
-        BigDecimal eurPrice, // Добавили конвертированную цену
+        BigDecimal eurPrice,
         LocalDateTime endTime,
         String status
 ) {}

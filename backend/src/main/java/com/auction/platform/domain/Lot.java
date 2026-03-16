@@ -11,9 +11,9 @@ import java.time.LocalDateTime;
 
 @Entity
 @Table(name = "lots")
-@Getter // Lombok: автоматически создаст getTitle(), getId() и т.д.
-@Setter // Lombok: автоматически создаст сеттеры
-@NoArgsConstructor // Lombok: создаст пустой конструктор для JPA
+@Getter
+@Setter
+@NoArgsConstructor
 public class Lot extends BaseEntity<Long> {
 
     @Column(name = "seller_id", nullable = false)
