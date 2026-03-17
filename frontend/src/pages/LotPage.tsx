@@ -41,7 +41,6 @@ export const LotPage = () => {
             await api.post('/bids', { lotId: id, amount: bidAmount });
             setMessage({ text: 'Ставка принята!', type: 'success' });
         } catch (err: unknown) {
-            // Используем axios.isAxiosError вместо 'any'
             if (axios.isAxiosError(err)) {
                 setMessage({
                     text: err.response?.data?.error || 'Ошибка при ставке',
@@ -74,13 +73,16 @@ export const LotPage = () => {
 
     return (
         <div className="max-w-5xl mx-auto grid grid-cols-1 md:grid-cols-2 gap-10 p-4">
-            <div className="bg-gray-100 rounded-2xl h-96 flex items-center justify-center overflow-hidden">
-                <img
-                    src={`https://source.unsplash.com/random/800x600/?auction,${lot.title}`}
-                    alt="Lot"
-                    className="object-cover w-full h-full opacity-90"
-                    onError={(e) => (e.currentTarget.src = 'https://via.placeholder.com/800x600?text=No+Image')}
-                />
+            <div className="h-48 bg-gray-200 overflow-hidden relative">
+                {lot.imagePath ? (
+                    <img
+                        src={`http://localhost:8080/${lot.imagePath}`}
+                        alt={lot.title}
+                        className="w-full h-full object-cover"
+                    />
+                ) : (
+                    <div className="w-full h-full flex items-center justify-center text-gray-400 italic">Нет фото</div>
+                )}
             </div>
 
             <div className="flex flex-col space-y-6">

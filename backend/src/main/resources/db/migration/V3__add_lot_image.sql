@@ -1,0 +1,1 @@
+ALTER TABLE lots ADD COLUMN image_path VARCHAR(500);

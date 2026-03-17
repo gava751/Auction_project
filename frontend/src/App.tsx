@@ -29,9 +29,11 @@ function App() {
                                     )}
 
                                     {user?.role === 'ROLE_SELLER' && (
-                                        <Link to="/create-lot" className="text-sm font-bold text-green-600 border border-green-200 px-3 py-1 rounded-lg hover:bg-green-50">
-                                            + Выставить лот
-                                        </Link>
+                                        <>
+                                            <Link to="/admin" className="text-sm font-bold text-green-600 border border-green-200 px-3 py-1 rounded-lg hover:bg-green-50">
+                                                Мои лоты
+                                            </Link>
+                                        </>
                                     )}
                                     {user?.role === 'ROLE_BUYER' && (
                                         <Link to="/apply-seller" className="text-sm font-bold text-blue-600 border border-blue-200 px-3 py-1 rounded-lg hover:bg-blue-50">

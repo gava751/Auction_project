@@ -91,7 +91,7 @@ public class AdminController {
         User admin = new User();
         admin.setEmail(request.email());
         admin.setPasswordHash(passwordEncoder.encode(request.password()));
-        admin.setRole("ROLE_ADMIN"); // Жестко ставим роль Админа
+        admin.setRole("ROLE_ADMIN");
         admin.setStatus("ACTIVE");
         admin.setFirstName("Системный");
         admin.setLastName("Администратор");

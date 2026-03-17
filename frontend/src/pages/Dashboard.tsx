@@ -13,7 +13,7 @@ interface Lot { id: number; title: string; currentPrice: number; status: string;
 export const Dashboard = () => {
     const { user } = useAuthStore();
     const [activeTab, setActiveTab] = useState<'kyc' | 'users' | 'categories' | 'lots' | 'admins'>('kyc');
-
+    const [myLots, setMyLots] = useState<Lot[]>([]);
     const [applications, setApplications] = useState<SellerApplication[]>([]);
     const [users, setUsers] = useState<User[]>([]);
     const [categories, setCategories] = useState<Category[]>([]);
@@ -35,7 +35,11 @@ export const Dashboard = () => {
             loadData();
         }
     }, [user, loadData]);
-
+    useEffect(() => {
+        if (user?.role === 'ROLE_SELLER') {
+            api.get<Lot[]>('/lots/my').then(res => setMyLots(res.data));
+        }
+    }, [user]);
     const handleApprove = async (id: number) => {
         await api.post(`/admin/applications/${id}/approve`);
         loadData();
@@ -90,6 +94,38 @@ export const Dashboard = () => {
                 <Link to="/create-lot" className="bg-green-600 text-white px-8 py-3 rounded-xl font-bold hover:bg-green-700 transition shadow-lg inline-block">
                     + Выставить новый лот
                 </Link>
+                <div className="mt-8 space-y-4 text-left max-w-2xl mx-auto">
+                    <h3 className="font-bold text-xl mb-4 border-b pb-2">Ваши активные лоты</h3>
+
+                    {myLots.length === 0 ? (
+                        <p className="text-gray-500 text-center italic">У вас пока нет активных лотов.</p>
+                    ) : (
+                        myLots.map(l => (
+                            <div key={l.id} className="p-4 border border-gray-200 rounded-xl flex justify-between items-center bg-white shadow-sm hover:shadow transition">
+                                <div>
+                                    <p className="font-bold text-gray-800">{l.title}</p>
+                                    <p className="text-sm text-blue-600 font-bold">${l.currentPrice.toFixed(2)}</p>
+                                </div>
+                                <button
+                                    onClick={async () => {
+                                        if(window.confirm("Вы уверены, что хотите удалить этот лот?")) {
+                                            try {
+                                                await api.delete(`/lots/${l.id}`);
+                                                setMyLots(myLots.filter(x => x.id !== l.id));
+                                            } catch {
+                                                alert("Ошибка при удалении лота");
+                                            }
+                                        }
+                                    }}
+                                    className="text-red-500 p-2 hover:bg-red-50 rounded-lg transition"
+                                    title="Удалить лот"
+                                >
+                                    <Trash2 size={20} />
+                                </button>
+                            </div>
+                        ))
+                    )}
+                </div>
             </div>
         );
     }

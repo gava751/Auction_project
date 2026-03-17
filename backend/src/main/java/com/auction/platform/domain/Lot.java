@@ -15,6 +15,8 @@ import java.time.LocalDateTime;
 @Setter
 @NoArgsConstructor
 public class Lot extends BaseEntity<Long> {
+    @Column(name = "image_path")
+    private String imagePath;
 
     @Column(name = "seller_id", nullable = false)
     private Long sellerId;
@@ -34,6 +36,9 @@ public class Lot extends BaseEntity<Long> {
     @Column(name = "bid_step", nullable = false)
     private BigDecimal bidStep;
 
+    @Column(columnDefinition = "TEXT")
+    private String description;
+
     @Enumerated(EnumType.STRING)
     @JdbcTypeCode(SqlTypes.VARCHAR)
     @Column(nullable = false)
@@ -43,11 +48,11 @@ public class Lot extends BaseEntity<Long> {
     private LocalDateTime endTime;
 
     @Version
-    private Integer version; // Optimistic Locking
+    private Integer version;
 
     public Lot(Long sellerId, Long categoryId, String title, BigDecimal startPrice, BigDecimal bidStep, LocalDateTime endTime) {
         this.sellerId = sellerId;
-        this.categoryId = categoryId; // Не забудьте эту строку
+        this.categoryId = categoryId;
         this.title = title;
         this.startPrice = startPrice;
         this.currentPrice = startPrice;

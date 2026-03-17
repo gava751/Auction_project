@@ -9,6 +9,7 @@ import org.springframework.data.jpa.repository.Lock;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 
+import java.util.List;
 import java.util.Optional;
 
 public interface LotRepository extends JpaRepository<Lot, Long> {
@@ -19,4 +20,6 @@ public interface LotRepository extends JpaRepository<Lot, Long> {
     @Lock(LockModeType.PESSIMISTIC_WRITE)
     @Query("SELECT l FROM Lot l WHERE l.id = :id")
     Optional<Lot> findByIdWithPessimisticLock(@Param("id") Long id);
+
+    List<Lot> findBySellerId(Long sellerId);
 }

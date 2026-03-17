@@ -20,5 +20,5 @@ public class SellerApplication extends BaseEntity<Long> {
     private String documentPath;
 
     @Column(nullable = false)
-    private String status = "PENDING"; // PENDING, APPROVED, REJECTED
+    private String status = "PENDING";
 }

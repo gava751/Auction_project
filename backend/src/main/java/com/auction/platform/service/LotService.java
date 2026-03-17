@@ -11,12 +11,14 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import com.auction.platform.repository.UserRepository;
 
 @Service
 @RequiredArgsConstructor
 public class LotService {
 
     private final LotRepository lotRepository;
+    private final UserRepository userRepository;
 
     @Transactional(readOnly = true)
     @Cacheable(value = "activeLots", key = "#pageable.pageNumber + '-' + #pageable.pageSize")
@@ -37,6 +39,15 @@ public class LotService {
         }
         Lot savedLot = lotRepository.save(lot);
         return LotFactory.createResponse(savedLot);
+    }
+
+    @Transactional
+    public void deleteLot(Long id, String sellerEmail) {
+        Lot lot = lotRepository.findById(id).orElseThrow();
+        if (!lot.getSellerId().equals(userRepository.findByEmail(sellerEmail).get().getId())) {
+            throw new RuntimeException("Нет прав на удаление этого лота");
+        }
+        lotRepository.delete(lot);
     }
 
     @Transactional(readOnly = true)

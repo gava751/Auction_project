@@ -5,6 +5,7 @@ export interface Lot {
     endTime: string;
     status: string;
     eurPrice?: number;
+    imagePath?: string;
 }
 
 export interface PageResponse<T> {

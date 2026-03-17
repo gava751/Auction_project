@@ -19,7 +19,7 @@ export const CreateLotPage = () => {
     const [startPrice, setStartPrice] = useState('');
     const [bidStep, setBidStep] = useState('');
     const [durationDays, setDurationDays] = useState('7');
-
+    const [file, setFile] = useState<File | null>(null);
     const [categories, setCategories] = useState<Category[]>([]);
     const [categoryId, setCategoryId] = useState('');
 
@@ -48,28 +48,29 @@ export const CreateLotPage = () => {
 
     const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
         e.preventDefault();
-        setError('');
         setIsLoading(true);
 
         const endDate = new Date();
         endDate.setDate(endDate.getDate() + parseInt(durationDays));
         const formattedEndTime = endDate.toISOString().slice(0, 19);
 
-        const newLot = {
-            title,
-            description,
-            startPrice: parseFloat(startPrice),
-            bidStep: parseFloat(bidStep),
-            endTime: formattedEndTime,
-            categoryId: parseInt(categoryId)
-        };
+        const formData = new FormData();
+        formData.append('title', title);
+        formData.append('description', description);
+        formData.append('startPrice', startPrice);
+        formData.append('bidStep', bidStep);
+        formData.append('endTime', formattedEndTime);
+        formData.append('categoryId', categoryId);
+        if (file) formData.append('file', file);
 
         try {
-            await api.post('/lots', newLot);
+            await api.post('/lots', formData, {
+                headers: { 'Content-Type': 'multipart/form-data' }
+            });
             navigate('/');
         } catch (err: unknown) {
             if (axios.isAxiosError(err)) {
-                setError(err.response?.data?.error || 'Ошибка при создании лота');
+                setError(err.response?.data?.error || err.response?.data || 'Ошибка создания лота');
             } else {
                 setError('Произошла непредвиденная ошибка');
             }
@@ -103,7 +104,14 @@ export const CreateLotPage = () => {
                         placeholder="Например: Игровая приставка Sony PlayStation 5"
                     />
                 </div>
-
+                <div>
+                    <label className="block text-sm font-bold text-gray-700 mb-1">Фото товара</label>
+                    <input
+                        type="file" accept="image/*"
+                        className="w-full p-2 border border-gray-300 rounded-lg bg-gray-50"
+                        onChange={(e) => setFile(e.target.files ? e.target.files[0] : null)}
+                    />
+                </div>
                 <div>
                     <label className="block text-sm font-bold text-gray-700 mb-1 text-left">Описание</label>
                     <textarea

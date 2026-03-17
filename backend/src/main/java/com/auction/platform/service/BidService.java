@@ -6,6 +6,7 @@ import com.auction.platform.domain.Lot;
 import com.auction.platform.domain.User;
 import com.auction.platform.dto.BidRequest;
 import com.auction.platform.exception.InvalidBidException;
+import com.auction.platform.pattern.observer.AuctionNotifier;
 import com.auction.platform.repository.AutoBidRepository;
 import com.auction.platform.repository.BidRepository;
 import com.auction.platform.repository.LotRepository;
@@ -29,7 +30,7 @@ public class BidService {
     private final BidRepository bidRepository;
     private final AutoBidRepository autoBidRepository;
     private final UserRepository userRepository;
-    private final ApplicationEventPublisher eventPublisher;
+    private final AuctionNotifier auctionNotifier;
 
     @Transactional
     public void placeManualBid(String userEmail, BidRequest request) {
@@ -49,7 +50,7 @@ public class BidService {
 
         processAutoBids(lot, user.getId());
 
-        eventPublisher.publishEvent(lot);
+        auctionNotifier.notifyObservers(lot);
     }
 
     @Transactional
@@ -68,7 +69,7 @@ public class BidService {
         autoBidRepository.save(autoBid);
 
         processAutoBids(lot, null);
-        eventPublisher.publishEvent(lot);
+        auctionNotifier.notifyObservers(lot);
     }
 
     private void processAutoBids(Lot lot, Long currentLeaderId) {
