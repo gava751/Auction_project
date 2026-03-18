@@ -1,12 +1,17 @@
 package com.auction.platform.domain;
 
 import jakarta.persistence.*;
+import lombok.Getter;
+import lombok.Setter;
+
 import java.io.Serializable;
 import java.time.LocalDateTime;
 
 @MappedSuperclass
 public abstract class BaseEntity<T extends Serializable> {
 
+    @Getter
+    @Setter
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private T id;
@@ -18,8 +23,4 @@ public abstract class BaseEntity<T extends Serializable> {
     protected void onCreate() {
         this.createdAt = LocalDateTime.now();
     }
-
-    public T getId() { return id; }
-    public void setId(T id) { this.id = id; }
-    public LocalDateTime getCreatedAt() { return createdAt; }
 }

@@ -22,7 +22,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 
 @SpringBootTest
 @AutoConfigureMockMvc
-@Transactional // Чтобы данные после теста очищались сами
+@Transactional
 class AuctionIntegrationTest {
 
     @Autowired private MockMvc mockMvc;
@@ -31,7 +31,6 @@ class AuctionIntegrationTest {
 
     @BeforeEach
     void setUp() {
-        // Создаем реального пользователя в БД для теста
         if (!userRepository.existsByEmail("user@test.com")) {
             User user = new User();
             user.setEmail("user@test.com");
@@ -52,6 +51,6 @@ class AuctionIntegrationTest {
         mockMvc.perform(post("/api/v1/bids")
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(objectMapper.writeValueAsString(request)))
-                .andExpect(status().isBadRequest()); // Теперь вернется 400 благодаря ExceptionHandler
+                .andExpect(status().isBadRequest());
     }
 }

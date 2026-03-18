@@ -1,7 +1,6 @@
 package com.auction.platform.config.security;
 
 import com.auction.platform.domain.Category;
-import com.auction.platform.domain.Lot;
 import com.auction.platform.domain.User;
 import com.auction.platform.repository.CategoryRepository;
 import com.auction.platform.repository.LotRepository;
@@ -11,16 +10,12 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.crypto.password.PasswordEncoder;
 
-import java.math.BigDecimal;
-import java.time.LocalDateTime;
-
 @Configuration
 public class DataSeeder {
 
     @Bean
     public CommandLineRunner initData(
             UserRepository userRepository,
-            LotRepository lotRepository,
             CategoryRepository categoryRepository,
             PasswordEncoder passwordEncoder) {
 

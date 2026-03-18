@@ -25,12 +25,10 @@ public class AuthController {
     private final org.springframework.security.crypto.password.PasswordEncoder passwordEncoder;
     @PostMapping("/login")
     public ResponseEntity<AuthResponse> login(@RequestBody AuthRequest request) {
-        // Проверяем логин и пароль
         authenticationManager.authenticate(
                 new UsernamePasswordAuthenticationToken(request.email(), request.password())
         );
 
-        // Если успешно, генерируем токен
         UserDetails userDetails = userDetailsService.loadUserByUsername(request.email());
         User user = userRepository.findByEmail(request.email()).orElseThrow();
         String token = jwtService.generateToken(userDetails);

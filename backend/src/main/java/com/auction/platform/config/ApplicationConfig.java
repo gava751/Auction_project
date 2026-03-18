@@ -21,7 +21,7 @@ public class ApplicationConfig {
 
     @Bean
     public UserDetailsService userDetailsService() {
-        return username -> (org.springframework.security.core.userdetails.UserDetails) userRepository.findByEmail(username)
+        return username -> userRepository.findByEmail(username)
                 .map(u -> org.springframework.security.core.userdetails.User.builder()
                         .username(u.getEmail())
                         .password(u.getPasswordHash())

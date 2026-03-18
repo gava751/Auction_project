@@ -6,7 +6,6 @@ import com.auction.platform.exception.AuctionException;
 import com.auction.platform.pattern.factory.LotFactory;
 import com.auction.platform.repository.LotRepository;
 import lombok.RequiredArgsConstructor;
-import org.springframework.cache.annotation.Cacheable;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
@@ -24,11 +23,6 @@ public class LotService {
     public Page<LotResponse> getActiveLots(Long categoryId, String search, Long userId, Pageable pageable) {
         return lotRepository.findActiveLotsWithFilters(categoryId, search, userId, pageable)
                 .map(com.auction.platform.pattern.factory.LotFactory::createResponse);
-    }
-
-    @Transactional
-    public void deleteLot(Long id) {
-        lotRepository.deleteById(id);
     }
 
     @Transactional

@@ -94,7 +94,7 @@ public class LotController {
         com.auction.platform.domain.Lot lot = lotService.getLotEntityById(id);
         Long winnerId = bidRepository.findTopByLotIdOrderByAmountDesc(id)
                 .map(bid -> bid.getUser().getId())
-                .orElse(-1L); // Если ставок нет, победителя нет
+                .orElse(-1L);
         if (!currentUser.getId().equals(lot.getSellerId()) && !currentUser.getId().equals(winnerId)) {
             response.sendError(jakarta.servlet.http.HttpServletResponse.SC_FORBIDDEN, "Отчет доступен только продавцу и победителю торгов");
             return;
