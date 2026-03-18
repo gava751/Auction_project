@@ -9,8 +9,6 @@ import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageRequest;
-import org.springframework.data.domain.Sort;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
@@ -39,26 +37,47 @@ public class LotController {
     private final com.auction.platform.repository.UserRepository userRepository;
     private final String UPLOAD_DIR = "uploads/lots/";
     private final com.auction.platform.repository.LotRepository lotRepository;
+    private final com.auction.platform.repository.BidRepository bidRepository;
 
     @GetMapping
-    @Operation(summary = "Получить список активных лотов с пагинацией")
-    public ResponseEntity<Page<LotResponse>> getActiveLots(
+    @Operation(summary = "Получить список активных лотов с фильтрацией")
+    public ResponseEntity<Page<com.auction.platform.dto.LotResponse>> getActiveLots(
+            @RequestParam(required = false) Long categoryId,
+            @RequestParam(required = false) String search,
             @RequestParam(defaultValue = "0") int page,
-            @RequestParam(defaultValue = "10") int size,
-            @RequestParam(defaultValue = "endTime") String sortBy) {
+            @RequestParam(defaultValue = "12") int size,
+            java.security.Principal principal) {
 
-        PageRequest pageRequest = PageRequest.of(page, size, Sort.by(sortBy).ascending());
-        return ResponseEntity.ok(lotService.getActiveLots(pageRequest));
+        Long userId = null;
+        if (principal != null) {
+            userId = userRepository.findByEmail(principal.getName())
+                    .map(com.auction.platform.domain.User::getId)
+                    .orElse(null);
+        }
+        org.springframework.data.domain.PageRequest pageRequest = org.springframework.data.domain.PageRequest.of(page, size);
+
+        return ResponseEntity.ok(lotService.getActiveLots(categoryId, search, userId, pageRequest));
     }
     @GetMapping("/{id}")
-    @Operation(summary = "Получить детальную информацию о лоте")
-    public ResponseEntity<LotResponse> getLotById(@PathVariable Long id) {
-        Lot lot = lotService.getLotEntityById(id);
-        Double rate = externalApiService.getUsdToEurRate();
-        BigDecimal eurPrice = lot.getCurrentPrice().multiply(BigDecimal.valueOf(rate));
+    public ResponseEntity<com.auction.platform.dto.LotResponse> getLotById(@PathVariable Long id) {
+        com.auction.platform.domain.Lot lot = lotService.getLotEntityById(id);
 
-        return ResponseEntity.ok(new LotResponse(
-                lot.getId(), lot.getTitle(), lot.getCurrentPrice(), eurPrice, lot.getEndTime(), lot.getStatus().name()
+        String winnerEmail = bidRepository.findTopByLotIdOrderByAmountDesc(id)
+                .map(bid -> bid.getUser().getEmail())
+                .orElse(null);
+
+        Double rate = externalApiService.getUsdToEurRate();
+        java.math.BigDecimal eurPrice = lot.getCurrentPrice().multiply(java.math.BigDecimal.valueOf(rate));
+
+        return ResponseEntity.ok(new com.auction.platform.dto.LotResponse(
+                lot.getId(),
+                lot.getTitle(),
+                lot.getCurrentPrice(),
+                eurPrice,
+                lot.getEndTime(),
+                lot.getStatus().name(),
+                lot.getImagePath(),
+                winnerEmail
         ));
     }
     @Autowired
@@ -66,14 +85,42 @@ public class LotController {
 
     @GetMapping("/{id}/report")
     @Operation(summary = "Скачать PDF отчет о результатах торгов")
-    public void downloadReport(@PathVariable Long id, jakarta.servlet.http.HttpServletResponse response) throws java.io.IOException {
+    public void downloadReport(@PathVariable Long id, java.security.Principal principal, jakarta.servlet.http.HttpServletResponse response) throws java.io.IOException {
+        if (principal == null) {
+            response.sendError(jakarta.servlet.http.HttpServletResponse.SC_UNAUTHORIZED, "Необходима авторизация");
+            return;
+        }
+        com.auction.platform.domain.User currentUser = userRepository.findByEmail(principal.getName()).orElseThrow();
+        com.auction.platform.domain.Lot lot = lotService.getLotEntityById(id);
+        Long winnerId = bidRepository.findTopByLotIdOrderByAmountDesc(id)
+                .map(bid -> bid.getUser().getId())
+                .orElse(-1L); // Если ставок нет, победителя нет
+        if (!currentUser.getId().equals(lot.getSellerId()) && !currentUser.getId().equals(winnerId)) {
+            response.sendError(jakarta.servlet.http.HttpServletResponse.SC_FORBIDDEN, "Отчет доступен только продавцу и победителю торгов");
+            return;
+        }
         response.setContentType("application/pdf");
         String headerKey = "Content-Disposition";
         String headerValue = "attachment; filename=lot_" + id + "_report.pdf";
         response.setHeader(headerKey, headerValue);
 
-        Lot lot = lotService.getLotEntityById(id);
         reportService.exportLotReport(response, lot);
+    }
+
+    @GetMapping("/won")
+    @Operation(summary = "Получить список выигранных пользователем лотов")
+    public List<com.auction.platform.dto.LotResponse> getWonLots(java.security.Principal principal) {
+        com.auction.platform.domain.User user = userRepository.findByEmail(principal.getName()).orElseThrow();
+
+        return lotRepository.findWonLots(user.getId()).stream()
+                .map(lot -> {
+                    com.auction.platform.dto.LotResponse res = com.auction.platform.pattern.factory.LotFactory.createResponse(lot);
+                    return new com.auction.platform.dto.LotResponse(
+                            res.id(), res.title(), res.currentPrice(), null,
+                            res.endTime(), res.status(), res.imagePath(), user.getEmail()
+                    );
+                })
+                .toList();
     }
 
     @PostMapping(consumes = {"multipart/form-data"})

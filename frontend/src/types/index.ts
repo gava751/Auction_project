@@ -6,6 +6,8 @@ export interface Lot {
     status: string;
     eurPrice?: number;
     imagePath?: string;
+    winnerEmail?: string;
+    sellerId?: number;
 }
 
 export interface PageResponse<T> {

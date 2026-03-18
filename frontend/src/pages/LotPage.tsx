@@ -8,7 +8,6 @@ import { useAuthStore } from '../store/useAuthStore';
 import { Gavel, Clock, TrendingUp } from 'lucide-react';
 
 export const LotPage = () => {
-    // 1. Строгая типизация параметров URL
     const { id } = useParams<{ id: string }>();
     const { user } = useAuthStore();
 
@@ -34,7 +33,32 @@ export const LotPage = () => {
             void stompClient.deactivate();
         };
     }, [id]);
+    const handleDownloadReport = async () => {
+        try {
+            const response = await api.get(`/lots/${lot?.id}/report`, {
+                responseType: 'blob'
+            });
+            const url = window.URL.createObjectURL(new Blob([response.data]));
+            const link = document.createElement('a');
+            link.href = url;
+            link.setAttribute('download', `lot_${lot?.id}_report.pdf`);
+            document.body.appendChild(link);
+            link.click();
 
+            link.parentNode?.removeChild(link);
+            window.URL.revokeObjectURL(url);
+        } catch (err: unknown) {
+            if (axios.isAxiosError(err)) {
+                if (err.response?.status === 403) {
+                    alert("У вас нет прав! Отчет доступен только продавцу и победителю.");
+                } else if (err.response?.status === 401) {
+                    alert("Пожалуйста, авторизуйтесь для скачивания отчета.");
+                } else {
+                    alert("Ошибка скачивания отчета");
+                }
+            }
+        }
+    };
     const handleBid = async (e: React.FormEvent<HTMLFormElement>) => {
         e.preventDefault();
         try {
@@ -87,14 +111,14 @@ export const LotPage = () => {
 
             <div className="flex flex-col space-y-6">
                 <h1 className="text-4xl font-bold text-gray-900">{lot.title}</h1>
-                <button
-                    onClick={() => {
-                        window.open(`http://localhost:8080/api/v1/lots/${lot.id}/report`, '_blank');
-                    }}
-                    className="mt-4 text-sm text-blue-600 hover:underline flex items-center gap-1"
-                >
-                    Скачать PDF отчет
-                </button>
+                {(lot.status === 'COMPLETED' && (user?.email === lot.winnerEmail || user?.role === 'ROLE_SELLER')) && (
+                    <button
+                        onClick={handleDownloadReport}
+                        className="mt-4 bg-blue-50 text-blue-600 border border-blue-200 px-4 py-2 rounded-lg text-sm font-bold hover:bg-blue-100 transition"
+                    >
+                        📄 Скачать PDF-отчет
+                    </button>
+                )}
                 <div className="flex items-center gap-6 p-4 bg-white rounded-xl shadow-sm border border-gray-100">
                     <div className="flex items-center gap-2 text-blue-600">
                         <TrendingUp size={24} />

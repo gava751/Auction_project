@@ -7,6 +7,7 @@ import { Dashboard } from './pages/Dashboard'; // Исправлено: доба
 import { useAuthStore } from './store/useAuthStore';
 import { CreateLotPage } from './pages/CreateLotPage';
 import { ApplySellerPage } from './pages/ApplySellerPage';
+import { WonLotsPage } from './pages/WonLotsPage';
 function App() {
     const { user, logout } = useAuthStore();
 
@@ -40,6 +41,11 @@ function App() {
                                             Стать продавцом
                                         </Link>
                                     )}
+                                    {user?.role === 'ROLE_BUYER' && (
+                                        <Link to="/my-wins" className="text-sm font-bold text-yellow-600 hover:text-yellow-700 flex items-center gap-1">
+                                            🏆 Мои победы
+                                        </Link>
+                                    )}
                                     <span className="text-sm text-gray-600">Привет, {user.email}</span>
                                     <button
                                         onClick={logout}
@@ -69,6 +75,7 @@ function App() {
                         <Route path="/admin" element={<Dashboard />} />
                         <Route path="/create-lot" element={<CreateLotPage />} />
                         <Route path="/apply-seller" element={<ApplySellerPage />} />
+                        <Route path="/my-wins" element={<WonLotsPage />} />
                     </Routes>
                 </main>
             </div>

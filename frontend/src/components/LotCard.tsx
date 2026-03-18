@@ -25,6 +25,9 @@ export const LotCard = ({ lot }: LotCardProps) => {
                 ) : (
                     <div className="w-full h-full flex items-center justify-center text-gray-400 italic">Нет фото</div>
                 )}
+                <div className={`absolute top-2 right-2 text-white text-xs font-bold px-2 py-1 rounded shadow-sm ${lot.status === 'ACTIVE' ? 'bg-green-500' : 'bg-gray-500'}`}>
+                    {lot.status === 'ACTIVE' ? 'Активен' : 'Завершен'}
+                </div>
             </div>
 
             <div className="p-5">

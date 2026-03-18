@@ -97,15 +97,17 @@ export const Dashboard = () => {
                 <div className="mt-8 space-y-4 text-left max-w-2xl mx-auto">
                     <h3 className="font-bold text-xl mb-4 border-b pb-2">Ваши активные лоты</h3>
 
-                    {myLots.length === 0 ? (
-                        <p className="text-gray-500 text-center italic">У вас пока нет активных лотов.</p>
-                    ) : (
-                        myLots.map(l => (
-                            <div key={l.id} className="p-4 border border-gray-200 rounded-xl flex justify-between items-center bg-white shadow-sm hover:shadow transition">
-                                <div>
-                                    <p className="font-bold text-gray-800">{l.title}</p>
-                                    <p className="text-sm text-blue-600 font-bold">${l.currentPrice.toFixed(2)}</p>
-                                </div>
+                    {myLots.map(l => (
+                        <div key={l.id} className="p-4 border border-gray-200 rounded-xl flex justify-between items-center bg-white shadow-sm hover:shadow transition">
+                            <div className="flex flex-col">
+                                <Link
+                                    to={`/lots/${l.id}`}
+                                    className="font-bold text-gray-800 hover:text-blue-600 transition underline-offset-2 hover:underline"
+                                >
+                                    {l.title}
+                                </Link>
+                                <p className="text-sm text-blue-600 font-bold">${l.currentPrice.toFixed(2)}</p>
+                            </div>
                                 <button
                                     onClick={async () => {
                                         if(window.confirm("Вы уверены, что хотите удалить этот лот?")) {
@@ -122,9 +124,8 @@ export const Dashboard = () => {
                                 >
                                     <Trash2 size={20} />
                                 </button>
-                            </div>
-                        ))
-                    )}
+                        </div>
+                    ))}
                 </div>
             </div>
         );

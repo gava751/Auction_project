@@ -11,7 +11,9 @@ public class LotFactory {
                 lot.getCurrentPrice(),
                 null,
                 lot.getEndTime(),
-                lot.getStatus().name()
+                lot.getStatus().name(),
+                lot.getImagePath(),
+                null
         );
     }
 }

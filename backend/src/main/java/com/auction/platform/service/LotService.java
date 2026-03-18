@@ -21,10 +21,9 @@ public class LotService {
     private final UserRepository userRepository;
 
     @Transactional(readOnly = true)
-    @Cacheable(value = "activeLots", key = "#pageable.pageNumber + '-' + #pageable.pageSize")
-    public Page<LotResponse> getActiveLots(Pageable pageable) {
-        return lotRepository.findActiveLots(pageable)
-                .map(LotFactory::createResponse);
+    public Page<LotResponse> getActiveLots(Long categoryId, String search, Long userId, Pageable pageable) {
+        return lotRepository.findActiveLotsWithFilters(categoryId, search, userId, pageable)
+                .map(com.auction.platform.pattern.factory.LotFactory::createResponse);
     }
 
     @Transactional
