@@ -6,11 +6,11 @@ import java.math.BigDecimal;
 
 public class BidStepValidator implements ConstraintValidator<ValidBidStep, BigDecimal> {
 
-    @Override
-    public boolean isValid(BigDecimal value, ConstraintValidatorContext context) {
-        if (value == null) {
-            return true;
-        }
-        return value.scale() <= 2;
+  @Override
+  public boolean isValid(BigDecimal value, ConstraintValidatorContext context) {
+    if (value == null) {
+      return true;
     }
+    return value.scale() <= 2;
+  }
 }

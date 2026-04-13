@@ -16,36 +16,39 @@ import com.auction.platform.repository.UserRepository;
 @RequiredArgsConstructor
 public class LotService {
 
-    private final LotRepository lotRepository;
-    private final UserRepository userRepository;
+  private final LotRepository lotRepository;
+  private final UserRepository userRepository;
 
-    @Transactional(readOnly = true)
-    public Page<LotResponse> getActiveLots(Long categoryId, String search, Long userId, Pageable pageable) {
-        return lotRepository.findActiveLotsWithFilters(categoryId, search, userId, pageable)
-                .map(com.auction.platform.pattern.factory.LotFactory::createResponse);
-    }
+  @Transactional(readOnly = true)
+  public Page<LotResponse> getActiveLots(
+      Long categoryId, String search, Long userId, Pageable pageable) {
+    return lotRepository
+        .findActiveLotsWithFilters(categoryId, search, userId, pageable)
+        .map(com.auction.platform.pattern.factory.LotFactory::createResponse);
+  }
 
-    @Transactional
-    public LotResponse createLot(Lot lot) {
-        if (lot.getCurrentPrice() == null) {
-            lot.setCurrentPrice(lot.getStartPrice());
-        }
-        Lot savedLot = lotRepository.save(lot);
-        return LotFactory.createResponse(savedLot);
+  @Transactional
+  public LotResponse createLot(Lot lot) {
+    if (lot.getCurrentPrice() == null) {
+      lot.setCurrentPrice(lot.getStartPrice());
     }
+    Lot savedLot = lotRepository.save(lot);
+    return LotFactory.createResponse(savedLot);
+  }
 
-    @Transactional
-    public void deleteLot(Long id, String sellerEmail) {
-        Lot lot = lotRepository.findById(id).orElseThrow();
-        if (!lot.getSellerId().equals(userRepository.findByEmail(sellerEmail).get().getId())) {
-            throw new RuntimeException("Нет прав на удаление этого лота");
-        }
-        lotRepository.delete(lot);
+  @Transactional
+  public void deleteLot(Long id, String sellerEmail) {
+    Lot lot = lotRepository.findById(id).orElseThrow();
+    if (!lot.getSellerId().equals(userRepository.findByEmail(sellerEmail).get().getId())) {
+      throw new RuntimeException("Нет прав на удаление этого лота");
     }
+    lotRepository.delete(lot);
+  }
 
-    @Transactional(readOnly = true)
-    public Lot getLotEntityById(Long lotId) {
-        return lotRepository.findById(lotId)
-                .orElseThrow(() -> new AuctionException("Лот не найден: " + lotId) {});
-    }
+  @Transactional(readOnly = true)
+  public Lot getLotEntityById(Long lotId) {
+    return lotRepository
+        .findById(lotId)
+        .orElseThrow(() -> new AuctionException("Лот не найден: " + lotId) {});
+  }
 }

@@ -1,12 +1,12 @@
-import { useState } from 'react';
-import { useNavigate } from 'react-router-dom';
-import { useAuthStore } from '../store/useAuthStore';
+import {useState} from 'react';
+import {useNavigate} from 'react-router-dom';
+import {useAuthStore} from '../store/useAuthStore';
 import api from '../api/axios';
 
 export const LoginPage = () => {
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
-    const[error, setError] = useState('');
+    const [error, setError] = useState('');
 
     const navigate = useNavigate();
     const login = useAuthStore((state) => state.login);
@@ -15,10 +15,10 @@ export const LoginPage = () => {
         e.preventDefault();
         setError('');
         try {
-            const response = await api.post('/auth/login', { email, password });
-            const { token, email: userEmail, role } = response.data;
+            const response = await api.post('/auth/login', {email, password});
+            const {token, email: userEmail, role} = response.data;
 
-            login({ email: userEmail, role }, token);
+            login({email: userEmail, role}, token);
 
             navigate('/');
         } catch {
@@ -63,7 +63,7 @@ export const LoginPage = () => {
                     href="http://localhost:8080/oauth2/authorization/google"
                     className="w-full mt-4 flex items-center justify-center gap-2 border border-gray-300 py-2 rounded hover:bg-gray-50 transition"
                 >
-                    <img src="https://www.svgrepo.com/show/355037/google.svg" className="w-5 h-5" alt="G" />
+                    <img src="https://www.svgrepo.com/show/355037/google.svg" className="w-5 h-5" alt="G"/>
                     Войти через Google
                 </a>
             </form>

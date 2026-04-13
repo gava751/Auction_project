@@ -1,8 +1,8 @@
-import { useEffect, useState } from 'react';
+import {useEffect, useState} from 'react';
 import api from '../api/axios';
-import type { Lot } from '../types';
-import { LotCard } from '../components/LotCard';
-import { Trophy } from 'lucide-react';
+import type {Lot} from '../types';
+import {LotCard} from '../components/LotCard';
+import {Trophy} from 'lucide-react';
 
 export const WonLotsPage = () => {
     const [wonLots, setWonLots] = useState<Lot[]>([]);
@@ -19,7 +19,7 @@ export const WonLotsPage = () => {
     return (
         <div className="px-4 pb-20">
             <div className="flex items-center gap-3 mb-8">
-                <Trophy className="text-yellow-500" size={32} />
+                <Trophy className="text-yellow-500" size={32}/>
                 <h1 className="text-4xl font-black text-gray-900 tracking-tight">Мои победы</h1>
             </div>
 
@@ -31,7 +31,7 @@ export const WonLotsPage = () => {
             ) : (
                 <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-8">
                     {wonLots.map(lot => (
-                        <LotCard key={lot.id} lot={lot} />
+                        <LotCard key={lot.id} lot={lot}/>
                     ))}
                 </div>
             )}

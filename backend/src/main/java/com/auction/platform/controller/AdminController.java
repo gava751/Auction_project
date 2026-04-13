@@ -1,18 +1,18 @@
 package com.auction.platform.controller;
 
 import com.auction.platform.domain.Category;
+import com.auction.platform.domain.SellerApplication;
 import com.auction.platform.domain.User;
-import com.auction.platform.repository.LotRepository;
-import com.auction.platform.repository.UserRepository;
 import com.auction.platform.repository.CategoryRepository;
+import com.auction.platform.repository.LotRepository;
+import com.auction.platform.repository.SellerApplicationRepository;
+import com.auction.platform.repository.UserRepository;
+import java.util.List;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.*;
-import com.auction.platform.domain.SellerApplication;
-import com.auction.platform.repository.SellerApplicationRepository;
-import java.util.List;
 
 @RestController
 @RequestMapping("/api/v1/admin")

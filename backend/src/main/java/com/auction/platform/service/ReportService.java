@@ -7,9 +7,9 @@ import com.auction.platform.pattern.strategy.VipFeeStrategy;
 import com.lowagie.text.*;
 import com.lowagie.text.pdf.PdfWriter;
 import jakarta.servlet.http.HttpServletResponse;
-import org.springframework.stereotype.Service;
 import java.io.IOException;
 import java.math.BigDecimal;
+import org.springframework.stereotype.Service;
 
 @Service
 public class ReportService {

@@ -1,9 +1,9 @@
-import React, { useState, useEffect } from 'react';
-import { useNavigate } from 'react-router-dom';
+import React, {useEffect, useState} from 'react';
+import {useNavigate} from 'react-router-dom';
 import axios from 'axios';
 import api from '../api/axios';
-import { useAuthStore } from '../store/useAuthStore';
-import { PackagePlus } from 'lucide-react';
+import {useAuthStore} from '../store/useAuthStore';
+import {PackagePlus} from 'lucide-react';
 
 interface Category {
     id: number;
@@ -12,7 +12,7 @@ interface Category {
 
 export const CreateLotPage = () => {
     const navigate = useNavigate();
-    const { user } = useAuthStore();
+    const {user} = useAuthStore();
 
     const [title, setTitle] = useState('');
     const [description, setDescription] = useState('');
@@ -65,7 +65,7 @@ export const CreateLotPage = () => {
 
         try {
             await api.post('/lots', formData, {
-                headers: { 'Content-Type': 'multipart/form-data' }
+                headers: {'Content-Type': 'multipart/form-data'}
             });
             navigate('/');
         } catch (err: unknown) {
@@ -82,7 +82,7 @@ export const CreateLotPage = () => {
     return (
         <div className="max-w-2xl mx-auto mt-10 p-8 bg-white rounded-2xl shadow-sm border border-gray-200 mb-20">
             <div className="flex items-center gap-3 mb-6 border-b pb-4">
-                <PackagePlus className="text-green-600" size={32} />
+                <PackagePlus className="text-green-600" size={32}/>
                 <h1 className="text-2xl font-bold text-gray-800">Выставить новый лот</h1>
             </div>
 

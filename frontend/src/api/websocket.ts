@@ -1,4 +1,4 @@
-import { Client } from '@stomp/stompjs';
+import {Client} from '@stomp/stompjs';
 import SockJS from 'sockjs-client';
 
 export const createStompClient = (onMessageReceived: (message: any) => void, lotId: number) => {

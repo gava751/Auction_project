@@ -11,20 +11,26 @@ import org.springframework.stereotype.Component;
 @RequiredArgsConstructor
 public class WebSocketNotificationObserver implements AuctionObserver {
 
-    private final SimpMessagingTemplate messagingTemplate;
-    private final BidRepository bidRepository;
+  private final SimpMessagingTemplate messagingTemplate;
+  private final BidRepository bidRepository;
 
-    @Override
-    public void onBidPlaced(Lot lot) {
-        String lastBidder = bidRepository.findTopByLotIdOrderByAmountDesc(lot.getId())
-                .map(bid -> bid.getUser().getEmail())
-                .orElse("Ставок нет");
+  @Override
+  public void onBidPlaced(Lot lot) {
+    String lastBidder =
+        bidRepository
+            .findTopByLotIdOrderByAmountDesc(lot.getId())
+            .map(bid -> bid.getUser().getEmail())
+            .orElse("Ставок нет");
 
-        LotUpdateMessage update = new LotUpdateMessage(
-                lot.getId(), lot.getCurrentPrice(), lastBidder, lot.getEndTime(), lot.getStatus().name()
-        );
+    LotUpdateMessage update =
+        new LotUpdateMessage(
+            lot.getId(),
+            lot.getCurrentPrice(),
+            lastBidder,
+            lot.getEndTime(),
+            lot.getStatus().name());
 
-        messagingTemplate.convertAndSend("/topic/lot/" + lot.getId(), update);
-        messagingTemplate.convertAndSend("/topic/lots", update);
-    }
+    messagingTemplate.convertAndSend("/topic/lot/" + lot.getId(), update);
+    messagingTemplate.convertAndSend("/topic/lots", update);
+  }
 }

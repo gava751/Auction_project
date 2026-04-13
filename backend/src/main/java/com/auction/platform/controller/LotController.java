@@ -3,18 +3,10 @@ package com.auction.platform.controller;
 import com.auction.platform.domain.Lot;
 import com.auction.platform.domain.User;
 import com.auction.platform.dto.LotResponse;
+import com.auction.platform.service.ExternalApiService;
 import com.auction.platform.service.LotService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
-import lombok.RequiredArgsConstructor;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.domain.Page;
-import org.springframework.http.ResponseEntity;
-import org.springframework.security.access.prepost.PreAuthorize;
-import org.springframework.web.bind.annotation.*;
-import com.auction.platform.service.ExternalApiService;
-import org.springframework.web.multipart.MultipartFile;
-
 import java.io.File;
 import java.io.IOException;
 import java.math.BigDecimal;
@@ -25,6 +17,13 @@ import java.security.Principal;
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.UUID;
+import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
 @RestController
 @RequestMapping("/api/v1/lots")
@@ -38,6 +37,8 @@ public class LotController {
     private final String UPLOAD_DIR = "uploads/lots/";
     private final com.auction.platform.repository.LotRepository lotRepository;
     private final com.auction.platform.repository.BidRepository bidRepository;
+    @Autowired
+    private com.auction.platform.service.ReportService reportService;
 
     @GetMapping
     @Operation(summary = "Получить список активных лотов с фильтрацией")
@@ -58,6 +59,7 @@ public class LotController {
 
         return ResponseEntity.ok(lotService.getActiveLots(categoryId, search, userId, pageRequest));
     }
+
     @GetMapping("/{id}")
     public ResponseEntity<com.auction.platform.dto.LotResponse> getLotById(@PathVariable Long id) {
         com.auction.platform.domain.Lot lot = lotService.getLotEntityById(id);
@@ -80,8 +82,6 @@ public class LotController {
                 winnerEmail
         ));
     }
-    @Autowired
-    private com.auction.platform.service.ReportService reportService;
 
     @GetMapping("/{id}/report")
     @Operation(summary = "Скачать PDF отчет о результатах торгов")

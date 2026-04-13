@@ -1,10 +1,9 @@
 package com.auction.platform.pattern.observer;
 
 import com.auction.platform.domain.Lot;
+import java.util.List;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
-
-import java.util.List;
 
 @Component
 @RequiredArgsConstructor

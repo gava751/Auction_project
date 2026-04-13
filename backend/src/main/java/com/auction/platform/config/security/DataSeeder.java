@@ -3,7 +3,6 @@ package com.auction.platform.config.security;
 import com.auction.platform.domain.Category;
 import com.auction.platform.domain.User;
 import com.auction.platform.repository.CategoryRepository;
-import com.auction.platform.repository.LotRepository;
 import com.auction.platform.repository.UserRepository;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.context.annotation.Bean;

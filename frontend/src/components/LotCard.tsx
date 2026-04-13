@@ -1,11 +1,11 @@
-import { Link } from 'react-router-dom';
+import {Link} from 'react-router-dom';
 import type {Lot} from '../types';
 
 interface LotCardProps {
     lot: Lot;
 }
 
-export const LotCard = ({ lot }: LotCardProps) => {
+export const LotCard = ({lot}: LotCardProps) => {
     const formatEndTime = (dateString: string) => {
         const date = new Date(dateString);
         return date.toLocaleString('ru-RU', {
@@ -14,7 +14,8 @@ export const LotCard = ({ lot }: LotCardProps) => {
     };
 
     return (
-        <div className="bg-white rounded-xl shadow-sm border border-gray-100 overflow-hidden hover:shadow-md transition-shadow duration-300">
+        <div
+            className="bg-white rounded-xl shadow-sm border border-gray-100 overflow-hidden hover:shadow-md transition-shadow duration-300">
             <div className="h-48 bg-gray-200 overflow-hidden relative">
                 {lot.imagePath ? (
                     <img
@@ -25,7 +26,8 @@ export const LotCard = ({ lot }: LotCardProps) => {
                 ) : (
                     <div className="w-full h-full flex items-center justify-center text-gray-400 italic">Нет фото</div>
                 )}
-                <div className={`absolute top-2 right-2 text-white text-xs font-bold px-2 py-1 rounded shadow-sm ${lot.status === 'ACTIVE' ? 'bg-green-500' : 'bg-gray-500'}`}>
+                <div
+                    className={`absolute top-2 right-2 text-white text-xs font-bold px-2 py-1 rounded shadow-sm ${lot.status === 'ACTIVE' ? 'bg-green-500' : 'bg-gray-500'}`}>
                     {lot.status === 'ACTIVE' ? 'Активен' : 'Завершен'}
                 </div>
             </div>

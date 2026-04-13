@@ -1,19 +1,19 @@
-import React, { useEffect, useState } from 'react';
-import { useParams } from 'react-router-dom';
+import React, {useEffect, useState} from 'react';
+import {useParams} from 'react-router-dom';
 import axios from 'axios';
 import api from '../api/axios';
-import type { Lot } from '../types';
-import { createStompClient } from '../api/websocket';
-import { useAuthStore } from '../store/useAuthStore';
-import { Gavel, Clock, TrendingUp } from 'lucide-react';
+import type {Lot} from '../types';
+import {createStompClient} from '../api/websocket';
+import {useAuthStore} from '../store/useAuthStore';
+import {Clock, Gavel, TrendingUp} from 'lucide-react';
 
 export const LotPage = () => {
-    const { id } = useParams<{ id: string }>();
-    const { user } = useAuthStore();
+    const {id} = useParams<{ id: string }>();
+    const {user} = useAuthStore();
 
     const [lot, setLot] = useState<Lot | null>(null);
     const [bidAmount, setBidAmount] = useState<number>(0);
-    const [message, setMessage] = useState({ text: '', type: '' });
+    const [message, setMessage] = useState({text: '', type: ''});
 
     useEffect(() => {
         if (!id) return;
@@ -62,8 +62,8 @@ export const LotPage = () => {
     const handleBid = async (e: React.FormEvent<HTMLFormElement>) => {
         e.preventDefault();
         try {
-            await api.post('/bids', { lotId: id, amount: bidAmount });
-            setMessage({ text: 'Ставка принята!', type: 'success' });
+            await api.post('/bids', {lotId: id, amount: bidAmount});
+            setMessage({text: 'Ставка принята!', type: 'success'});
         } catch (err: unknown) {
             if (axios.isAxiosError(err)) {
                 setMessage({
@@ -82,7 +82,7 @@ export const LotPage = () => {
 
         try {
             await api.post(`/bids/auto/${id}?maxLimit=${limit}`);
-            setMessage({ text: 'Авто-биддер активирован!', type: 'success' });
+            setMessage({text: 'Авто-биддер активирован!', type: 'success'});
         } catch (err: unknown) {
             if (axios.isAxiosError(err)) {
                 setMessage({
@@ -121,7 +121,7 @@ export const LotPage = () => {
                 )}
                 <div className="flex items-center gap-6 p-4 bg-white rounded-xl shadow-sm border border-gray-100">
                     <div className="flex items-center gap-2 text-blue-600">
-                        <TrendingUp size={24} />
+                        <TrendingUp size={24}/>
                         <div>
                             <p className="text-xs text-gray-500 uppercase font-bold">Текущая цена</p>
                             <p className="text-3xl font-black">${lot.currentPrice.toFixed(2)}</p>
@@ -132,7 +132,7 @@ export const LotPage = () => {
                     </div>
                     <div className="h-10 w-px bg-gray-200"></div>
                     <div className="flex items-center gap-2 text-gray-700">
-                        <Clock size={24} />
+                        <Clock size={24}/>
                         <div>
                             <p className="text-xs text-gray-500 uppercase font-bold">Завершение</p>
                             <p className="font-semibold">{new Date(lot.endTime).toLocaleTimeString()}</p>
@@ -144,7 +144,7 @@ export const LotPage = () => {
                     <>
                         <form onSubmit={handleBid} className="p-6 bg-gray-900 rounded-2xl text-white shadow-xl">
                             <h3 className="text-lg font-bold mb-4 flex items-center gap-2">
-                                <Gavel size={20} /> Ваша ставка
+                                <Gavel size={20}/> Ваша ставка
                             </h3>
                             <div className="flex gap-3">
                                 <input
@@ -153,7 +153,8 @@ export const LotPage = () => {
                                     value={bidAmount}
                                     onChange={(e) => setBidAmount(Number(e.target.value))}
                                 />
-                                <button type="submit" className="bg-blue-600 hover:bg-blue-500 px-8 py-3 rounded-lg font-bold transition">
+                                <button type="submit"
+                                        className="bg-blue-600 hover:bg-blue-500 px-8 py-3 rounded-lg font-bold transition">
                                     Подтвердить
                                 </button>
                             </div>
@@ -161,7 +162,7 @@ export const LotPage = () => {
 
                         <div className="mt-8 p-6 bg-white border-2 border-dashed border-blue-200 rounded-2xl">
                             <h3 className="text-lg font-bold mb-2 text-blue-800 flex items-center gap-2">
-                                <TrendingUp size={20} /> Авто-биддер
+                                <TrendingUp size={20}/> Авто-биддер
                             </h3>
                             <div className="flex gap-3">
                                 <input

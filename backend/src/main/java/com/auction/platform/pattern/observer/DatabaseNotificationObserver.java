@@ -10,14 +10,14 @@ import org.springframework.stereotype.Component;
 @RequiredArgsConstructor
 public class DatabaseNotificationObserver implements AuctionObserver {
 
-    private final NotificationRepository notificationRepository;
+  private final NotificationRepository notificationRepository;
 
-    @Override
-    public void onBidPlaced(Lot lot) {
-        Notification notif = new Notification();
-        notif.setUserId(lot.getSellerId());
-        notif.setMessage("Ставка на ваш лот обновлена: " + lot.getCurrentPrice());
-        notif.setType("UPDATE");
-        notificationRepository.save(notif);
-    }
+  @Override
+  public void onBidPlaced(Lot lot) {
+    Notification notif = new Notification();
+    notif.setUserId(lot.getSellerId());
+    notif.setMessage("Ставка на ваш лот обновлена: " + lot.getCurrentPrice());
+    notif.setType("UPDATE");
+    notificationRepository.save(notif);
+  }
 }

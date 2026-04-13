@@ -1,11 +1,10 @@
 package com.auction.platform.domain;
 
 import jakarta.persistence.*;
-import lombok.Getter;
-import lombok.Setter;
-
 import java.io.Serializable;
 import java.time.LocalDateTime;
+import lombok.Getter;
+import lombok.Setter;
 
 @MappedSuperclass
 public abstract class BaseEntity<T extends Serializable> {

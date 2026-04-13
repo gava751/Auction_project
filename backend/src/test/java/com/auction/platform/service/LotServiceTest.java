@@ -21,26 +21,27 @@ import static org.mockito.Mockito.*;
 @ExtendWith(MockitoExtension.class)
 class LotServiceTest {
 
-    @Mock private LotRepository lotRepository;
-    @Mock private UserRepository userRepository;
+  @Mock private LotRepository lotRepository;
+  @Mock private UserRepository userRepository;
 
-    @InjectMocks private LotService lotService;
+  @InjectMocks private LotService lotService;
 
-    @Test
-    @DisplayName("Продавец может удалить только свой лот")
-    void shouldThrowExceptionWhenDeletingForeignLot() {
-        User hacker = new User();
-        hacker.setId(99L);
-        hacker.setEmail("hacker@test.com");
+  @Test
+  @DisplayName("Продавец может удалить только свой лот")
+  void shouldThrowExceptionWhenDeletingForeignLot() {
+    User hacker = new User();
+    hacker.setId(99L);
+    hacker.setEmail("hacker@test.com");
 
-        Lot lot = new Lot(1L, 1L, "MacBook", BigDecimal.TEN, BigDecimal.ONE, LocalDateTime.now().plusDays(1));
-        lot.setId(5L);
+    Lot lot =
+        new Lot(1L, 1L, "MacBook", BigDecimal.TEN, BigDecimal.ONE, LocalDateTime.now().plusDays(1));
+    lot.setId(5L);
 
-        when(lotRepository.findById(5L)).thenReturn(Optional.of(lot));
-        when(userRepository.findByEmail("hacker@test.com")).thenReturn(Optional.of(hacker));
+    when(lotRepository.findById(5L)).thenReturn(Optional.of(lot));
+    when(userRepository.findByEmail("hacker@test.com")).thenReturn(Optional.of(hacker));
 
-        assertThrows(RuntimeException.class, () -> lotService.deleteLot(5L, "hacker@test.com"));
+    assertThrows(RuntimeException.class, () -> lotService.deleteLot(5L, "hacker@test.com"));
 
-        verify(lotRepository, never()).delete(any());
-    }
+    verify(lotRepository, never()).delete(any());
+  }
 }

@@ -8,25 +8,26 @@ import org.hibernate.type.SqlTypes;
 
 @Entity
 @Table(name = "users")
-@Getter @Setter
+@Getter
+@Setter
 public class User extends BaseEntity<Long> {
 
-    @Column(nullable = false, unique = true)
-    private String email;
+  @Column(nullable = false, unique = true)
+  private String email;
 
-    @Column(name = "password_hash")
-    private String passwordHash;
+  @Column(name = "password_hash")
+  private String passwordHash;
 
-    @Column(name = "first_name", nullable = false)
-    private String firstName;
+  @Column(name = "first_name", nullable = false)
+  private String firstName;
 
-    @Column(name = "last_name", nullable = false)
-    private String lastName;
+  @Column(name = "last_name", nullable = false)
+  private String lastName;
 
-    @Column(nullable = false)
-    @JdbcTypeCode(SqlTypes.VARCHAR)
-    private String role;
+  @Column(nullable = false)
+  @JdbcTypeCode(SqlTypes.VARCHAR)
+  private String role;
 
-    @Column(nullable = false)
-    private String status;
+  @Column(nullable = false)
+  private String status;
 }
